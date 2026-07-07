@@ -37,9 +37,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.5);opacity:0}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes gradMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes slidePhone{from{opacity:0;transform:translateY(40px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes scanLine{0%{top:0}100%{top:100%}}
 
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
@@ -51,7 +48,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:fl
 .nav-links{display:flex;gap:24px}
 .nav-links a{color:var(--mid);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
 .nav-links a:hover{color:var(--text)}
-.nav-cta{background:var(--accent);color:#000;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:opacity .2s}
+.nav-cta{background:var(--accent);color:#000;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:opacity .2s;cursor:pointer;border:none;}
 .nav-cta:hover{opacity:.85}
 
 /* ─── HERO ─── */
@@ -143,28 +140,119 @@ section{padding:100px 24px;max-width:1100px;margin:0 auto}
 .tl-task{font-size:11px;color:var(--dim);display:flex;gap:6px;align-items:center}
 .tl-task::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--dim);flex-shrink:0}
 
-/* ─── PRICE & COSTS ─── */
-.pricing-container{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px;align-items:stretch}
-@media(max-width:768px){.pricing-container{grid-template-columns:1fr}}
-.price-card{background:linear-gradient(135deg,rgba(245,166,35,.1) 0%,rgba(232,66,10,.06) 100%);border:1px solid rgba(245,166,35,.3);border-radius:24px;padding:36px;text-align:center;display:flex;flex-direction:column;justify-content:space-between}
-.cost-card{background:linear-gradient(135deg,rgba(59,130,246,.1) 0%,rgba(168,85,247,.06) 100%);border:1px solid rgba(59,130,246,.3);border-radius:24px;padding:36px;text-align:center;display:flex;flex-direction:column;justify-content:space-between}
-.price-amount{font-family:'Bebas Neue';font-size:64px;letter-spacing:2px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.cost-amount{font-family:'Bebas Neue';font-size:64px;letter-spacing:2px;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.price-label{font-size:13px;color:var(--mid);margin-top:4px;margin-bottom:24px}
-.price-includes{display:flex;flex-direction:column;gap:12px;text-align:left}
-.price-includes li{display:flex;align-items:flex-start;gap:10px;font-size:13px;list-style:none;line-height:1.4;color:var(--text)}
-.price-includes.inc-green li::before{content:'✓';width:20px;height:20px;border-radius:6px;background:rgba(34,197,94,.15);color:var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
-.price-includes.inc-blue li::before{content:'⚙';width:20px;height:20px;border-radius:6px;background:rgba(59,130,246,.15);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
-
 /* ─── CTA SECTION ─── */
 .cta-section{background:linear-gradient(135deg,var(--surface) 0%,var(--card) 100%);border:1px solid var(--border);border-radius:28px;padding:64px 32px;text-align:center;margin:0 24px 80px;position:relative;overflow:hidden}
 .cta-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+
+/* ─── CONTACT MODAL ─── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 11, 18, 0.9);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.show {
+  display: flex;
+  opacity: 1;
+}
+.modal-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 48px 32px;
+  text-align: center;
+  position: relative;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.show .modal-content {
+  transform: translateY(0);
+}
+.close-modal {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 28px;
+  color: var(--mid);
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.close-modal:hover {
+  color: var(--text);
+}
+.modal-title {
+  font-family: 'Bebas Neue';
+  font-size: 40px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.modal-desc {
+  font-size: 14px;
+  color: var(--mid);
+  margin-bottom: 32px;
+}
+.contact-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.2s;
+}
+.contact-item:hover {
+  border-color: var(--dim);
+}
+.contact-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(245,166,35,.1);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.contact-detail {
+  text-align: left;
+}
+.contact-label {
+  font-size: 11px;
+  color: var(--mid);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+.contact-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+.contact-value:hover {
+  color: var(--accent);
+}
 
 /* ─── FOOTER ─── */
 footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center;color:var(--dim);font-size:12px}
 footer strong{color:var(--mid)}
 
-/* ─── MOCK SCREENS CONTENT ─── */
+/* ─── MOCK SCREENS CONTENT (Minified for brevity) ─── */
 .mock-header{padding:10px 10px 6px;border-bottom:1px solid rgba(255,255,255,.06)}
 .mock-logo{font-family:'Bebas Neue';font-size:14px;letter-spacing:2px;color:var(--accent)}
 .mock-subt{font-size:6px;letter-spacing:1px;color:var(--mid)}
@@ -198,9 +286,9 @@ footer strong{color:var(--mid)}
     <a href="#features">Funkcje</a>
     <a href="#mockup">Ekrany</a>
     <a href="#flow">Jak działa</a>
-    <a href="#pricing">Finanse &amp; SaaS</a>
+    <a href="#timeline">Harmonogram</a>
   </div>
-  <a href="#cta" class="nav-cta">Skontaktuj się</a>
+  <button class="nav-cta contact-btn">Skontaktuj się</button>
 </nav>
 
 <!-- HERO -->
@@ -212,7 +300,7 @@ footer strong{color:var(--mid)}
   <p class="hero-sub reveal">Inteligentny system zarządzania gastronomią na eventach masowych. Jeden lider, dziesiątki pracowników — wszystko zsynchronizowane przez Bluetooth, nawet bez zasięgu GSM.</p>
   <div class="hero-btns reveal">
     <a href="#mockup" class="btn btn-primary">▶ Zobacz ekrany</a>
-    <a href="#pricing" class="btn btn-outline">Koszt utrzymania i model SaaS</a>
+    <button class="btn btn-outline contact-btn">Skontaktuj się</button>
   </div>
 
   <!-- HERO PHONE -->
@@ -269,63 +357,54 @@ footer strong{color:var(--mid)}
   <h2 class="section-title reveal">Wszystko czego potrzebujesz<br/>na evencie masowym</h2>
 
   <div class="features-grid">
-
     <div class="feature-card reveal">
       <div class="feature-icon" style="background:rgba(245,166,35,.15)">📍</div>
       <span class="feature-tag tag-leader">LIDER</span>
       <div class="feature-title">Lokalizacja BT + GPS</div>
       <div class="feature-desc">Lider uruchamia jednym przyciskiem udostępnianie lokalizacji przez sieć Bluetooth mesh. Działa bez internetu — dane synchronizują się peer-to-peer między urządzeniami.</div>
     </div>
-
     <div class="feature-card reveal">
       <div class="feature-icon" style="background:rgba(59,130,246,.15)">🔵</div>
       <span class="feature-tag tag-system">SYSTEM</span>
       <div class="feature-title">Meldunek Bluetooth</div>
       <div class="feature-desc">Pracownik przykłada telefon do urządzenia lidera. Sygnał BLE rejestruje obecność automatycznie na liście. Bez papieru, bez wpisywania ręcznego.</div>
     </div>
-
     <div class="feature-card reveal">
       <div class="feature-icon" style="background:rgba(34,197,94,.15)">✅</div>
       <span class="feature-tag tag-leader">LIDER</span>
       <div class="feature-title">Checklist lidera</div>
       <div class="feature-desc">Stanowiska, żetony, koszulki, czapki, opaski z numerami — każdy element gotowości eventu w jednym miejscu z wizualnym statusem postępu.</div>
     </div>
-
     <div class="feature-card reveal">
       <div class="feature-icon" style="background:rgba(239,68,68,.15)">🚨</div>
       <span class="feature-tag tag-leader">LIDER</span>
       <div class="feature-title">Raportowanie braków</div>
       <div class="feature-desc">16 produktów na kiosku: Keg, piwo, chipsy, nachos, sosy, drinki, opakowania, żetony i więcej. Jedno tapnięcie — alert dla lidera o braku towaru.</div>
     </div>
-
     <div class="feature-card reveal">
       <div class="feature-icon" style="background:rgba(168,85,247,.15)">🗺</div>
       <span class="feature-tag tag-worker">PRACOWNIK</span>
       <div class="feature-title">Mapa eventu</div>
       <div class="feature-desc">Pracownik widzi mapę z lokalizacją lidera i kiosków w momencie, gdy lider ją udostępni. Live update pozycji bez konieczności dzwonienia lub pisania SMS.</div>
     </div>
-
     <div class="feature-card reveal">
       <div class="feature-icon" style="background:rgba(245,166,35,.15)">📋</div>
       <span class="feature-tag tag-worker">PRACOWNIK</span>
       <div class="feature-title">Instrukcje stanowiska</div>
       <div class="feature-desc">Każdy kiosk ma własne instrukcje — opis kroków przygotowania oraz osadzony filmik instruktażowy. Idealne do onboardingu nowych pracowników na miejscu.</div>
     </div>
-
     <div class="feature-card reveal">
       <div class="feature-icon" style="background:rgba(59,130,246,.15)">📱</div>
       <span class="feature-tag tag-worker">PRACOWNIK</span>
       <div class="feature-title">Checklist kiosku</div>
       <div class="feature-desc">8 zadań do wykonania przed otwarciem — czystość, kasa, terminal POS, lodówka, strój. Pracownik odhacza kroki, lider widzi status w czasie rzeczywistym.</div>
     </div>
-
     <div class="feature-card reveal">
       <div class="feature-icon" style="background:rgba(168,85,247,.15)">📡</div>
       <span class="feature-tag tag-system">SYSTEM</span>
       <div class="feature-title">Tryb offline</div>
       <div class="feature-desc">Aplikacja działa w pełni bez zasięgu GSM. Dane synchronizują się przez Bluetooth mesh między urządzeniami. Duże eventy w strefach bez sieci — obsłużone.</div>
     </div>
-
   </div>
 </section>
 
@@ -682,10 +761,10 @@ footer strong{color:var(--mid)}
   </div>
 </section>
 
-<!-- TIMELINE & PRICING -->
-<section id="pricing" style="max-width:950px;margin:0 auto;padding:40px 24px 80px">
-  <span class="section-label reveal">HARMONOGRAM &amp; FINANSE</span>
-  <h2 class="section-title reveal">Plan realizacji i koszty</h2>
+<!-- TIMELINE -->
+<section id="timeline" style="max-width:950px;margin:0 auto;padding:40px 24px 80px">
+  <span class="section-label reveal">HARMONOGRAM</span>
+  <h2 class="section-title reveal">9 miesięcy do MVP</h2>
   
   <div class="timeline">
     <div class="tl-item reveal" style="border-color:rgba(245,166,35,.3)">
@@ -694,7 +773,7 @@ footer strong{color:var(--mid)}
       <div class="tl-label">miesiące</div>
       <div class="tl-tasks">
         <div class="tl-task">Projekt UX/UI</div>
-        <div class="tl-task">Architektura SaaS</div>
+        <div class="tl-task">Architektura systemu</div>
         <div class="tl-task">System ról i logowania</div>
       </div>
     </div>
@@ -714,7 +793,7 @@ footer strong{color:var(--mid)}
       <div class="tl-label">miesiące</div>
       <div class="tl-tasks">
         <div class="tl-task">Geolokalizacja / Mapa</div>
-        <div class="tl-task">Płatności In-App Store</div>
+        <div class="tl-task">Wewnętrzny system alertów</div>
         <div class="tl-task">Zaawansowane raportowanie</div>
       </div>
     </div>
@@ -729,47 +808,6 @@ footer strong{color:var(--mid)}
       </div>
     </div>
   </div>
-
-  <!-- Finanse Container -->
-  <div class="pricing-container">
-    
-    <!-- Karta Kosztów Utrzymania -->
-    <div class="cost-card reveal">
-      <div>
-        <div style="font-size:12px;color:var(--mid);letter-spacing:2px;margin-bottom:4px">SZACUNKOWE KOSZTY INFRASTRUKTURY</div>
-        <div class="cost-amount">~330</div>
-        <div class="price-label">PLN / miesiąc (około 4 000 PLN rocznie)</div>
-        <ul class="price-includes inc-blue">
-          <li><strong>Konto Apple Developer:</strong> Wymagane roczne utrzymanie ($99 / rok, rozbite na miesiące).</li>
-          <li><strong>Utrzymanie i hosting backendu:</strong> Serwery obsługujące logikę biznesową i API (Python).</li>
-          <li><strong>Produkcyjna baza danych:</strong> Stabilne i skalowalne przechowywanie danych (Supabase / MongoDB Atlas).</li>
-          <li><strong>Frontend &amp; Dystrybucja:</strong> Infrastruktura serwująca aktualizacje aplikacji i zasoby statyczne.</li>
-        </ul>
-      </div>
-      <div style="margin-top:20px;padding:12px;background:rgba(59,130,246,.1);border-radius:10px;font-size:11px;color:var(--mid);text-align:left">
-        💡 Koszty infrastruktury są elastyczne i rosną proporcjonalnie do faktycznego zużycia oraz skali obsługiwanych eventów.
-      </div>
-    </div>
-
-    <!-- Karta Ceny SaaS -->
-    <div class="price-card reveal">
-      <div>
-        <div style="font-size:12px;color:var(--mid);letter-spacing:2px;margin-bottom:4px">MODEL PLANU SUBSKRYPCYJNEGO</div>
-        <div class="price-amount">499</div>
-        <div class="price-label">PLN netto / miesiąc</div>
-        <ul class="price-includes inc-green">
-          <li><strong>Pełny dostęp SaaS:</strong> Dostęp do paneli lidera i pracowników dla całej organizacji.</li>
-          <li><strong>Natywne rozliczenia:</strong> Wsparcie dla systemów subskrypcyjnych Apple App Store oraz Google Play.</li>
-          <li><strong>Niezależność offline:</strong> Autorski moduł wymiany danych przez Bluetooth LE i lokalne bazy danych.</li>
-          <li><strong>Darmowe aktualizacje:</strong> Stały dostęp do poprawek, nowych funkcji i wsparcia powdrożeniowego.</li>
-        </ul>
-      </div>
-      <div style="margin-top:20px;padding:12px;background:rgba(245,166,35,.1);border-radius:10px;font-size:11px;color:var(--mid);text-align:left">
-        🚀 Cena pokrywa pełne koszty bieżącej infrastruktury, zapewniając stabilność i natychmiastową gotowość operacyjną systemu.
-      </div>
-    </div>
-
-  </div>
 </section>
 
 <!-- CTA -->
@@ -778,23 +816,48 @@ footer strong{color:var(--mid)}
     <div class="cta-glow"></div>
     <div style="font-size:11px;letter-spacing:3px;color:var(--accent);font-weight:700;margin-bottom:12px">ZACZNIJMY RAZEM</div>
     <h2 style="font-family:'Bebas Neue';font-size:clamp(36px,6vw,64px);letter-spacing:2px;margin-bottom:16px">Gotowy na GastroApp?</h2>
-    <p style="font-size:15px;color:var(--mid);max-width:480px;margin:0 auto 32px;line-height:1.6">Skontaktuj się z nami, przedstawiamy ofertę w ciągu 24h. Pierwsze konsultacje — bezpłatnie.</p>
+    <p style="font-size:15px;color:var(--mid);max-width:480px;margin:0 auto 32px;line-height:1.6">Skontaktuj się z nami. Pierwsze konsultacje przeprowadzamy całkowicie bezpłatnie.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="mailto:kontakt@chrissoftwaresolutions.pl" class="btn btn-primary" style="font-size:15px">📧 Wyślij e-mail</a>
+      <button class="btn btn-primary contact-btn" style="font-size:15px">📬 Skontaktuj się</button>
       <a href="#features" class="btn btn-outline" style="font-size:15px">↑ Wróć na górę</a>
     </div>
     <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);display:flex;gap:32px;justify-content:center;flex-wrap:wrap">
       <div style="text-align:center"><div style="font-family:'Bebas Neue';font-size:28px;color:var(--accent)">9</div><div style="font-size:11px;color:var(--mid)">miesięcy do MVP</div></div>
       <div style="text-align:center"><div style="font-family:'Bebas Neue';font-size:28px;color:var(--blue)">iOS+Android</div><div style="font-size:11px;color:var(--mid)">jedna baza kodu</div></div>
-      <div style="text-align:center"><div style="font-family:'Bebas Neue';font-size:28px;color:var(--green)">SaaS</div><div style="font-size:11px;color:var(--mid)">transparentny model</div></div>
+      <div style="text-align:center"><div style="font-family:'Bebas Neue';font-size:28px;color:var(--green)">100%</div><div style="font-size:11px;color:var(--mid)">offline Bluetooth</div></div>
     </div>
   </div>
 </div>
 
 <footer>
-  <div style="margin-bottom:8px"><strong>ChrisSoftwareSolutions</strong> · Krzysztof · kontakt@chrissoftwaresolutions.pl</div>
+  <div style="margin-bottom:8px"><strong>ChrisSoftwareSolutions</strong> · Krzysztof</div>
   <div>GastroApp MVP Pitch Deck · 2026</div>
 </footer>
+
+<!-- CONTACT MODAL -->
+<div id="contact-modal" class="modal-overlay">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3 class="modal-title">Porozmawiajmy</h3>
+    <p class="modal-desc">Skontaktuj się ze mną, aby omówić szczegóły i harmonogram projektu GastroApp.</p>
+    
+    <div class="contact-item">
+      <div class="contact-icon">📧</div>
+      <div class="contact-detail">
+        <div class="contact-label">EMAIL</div>
+        <a href="mailto:krisjanik5@gmail.com" class="contact-value">krisjanik5@gmail.com</a>
+      </div>
+    </div>
+    
+    <div class="contact-item">
+      <div class="contact-icon">📞</div>
+      <div class="contact-detail">
+        <div class="contact-label">TELEFON</div>
+        <a href="tel:+48793947372" class="contact-value">793 947 372</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 // Scroll reveal
@@ -807,6 +870,40 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 window.addEventListener('scroll', () => {
   const nav = document.querySelector('nav');
   nav.style.background = window.scrollY > 60 ? 'rgba(8,11,18,0.95)' : 'rgba(8,11,18,0.85)';
+});
+
+// Modal Logic
+const modal = document.getElementById('contact-modal');
+const contactBtns = document.querySelectorAll('.contact-btn');
+const closeModalBtn = document.querySelector('.close-modal');
+
+// Open modal
+contactBtns.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal.style.display = 'flex';
+    // Small delay to allow display:flex to apply before adding opacity class
+    setTimeout(() => {
+      modal.classList.add('show');
+    }, 10);
+  });
+});
+
+// Close modal logic
+const closeModal = () => {
+  modal.classList.remove('show');
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 300); // matches CSS transition time
+};
+
+closeModalBtn.addEventListener('click', closeModal);
+
+// Close on outside click
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    closeModal();
+  }
 });
 </script>
 </body>
