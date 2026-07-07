@@ -261,6 +261,31 @@
   .card-link:hover{text-decoration:underline;}
   @media (max-width:700px){ .project-grid{grid-template-columns:1fr;} }
 
+  /*<!-- ============ OFERTA (CHRONIONA HASŁEM) ============ -->*/
+<div class="page" id="page-oferta">
+  <section class="page-section-first wrap">
+    <div class="section-head">
+      <p class="section-tag">// oferta dedykowana</p>
+      <h2 class="section-title">GastroApp — Pitch Deck</h2>
+      <p class="section-desc">Ta przestrzeń zawiera materiały koncepcyjne i ofertowe zabezpieczone hasłem.</p>
+    </div>
+
+    <!-- Moduł logowania -->
+    <div id="password-container" style="max-width: 400px; margin: 40px auto; text-align: center; background: var(--bg-panel); padding: 40px; border: 1px solid var(--border); border-radius: var(--radius);">
+      <div style="font-size: 32px; margin-bottom: 16px;">🔒</div>
+      <h3 style="font-family: var(--mono); margin-top: 0; margin-bottom: 24px;">Wprowadź hasło</h3>
+      <input type="password" id="oferta-password" placeholder="Hasło dostępu..." style="width: 100%; padding: 12px 14px; margin-bottom: 16px; background: var(--bg-void); border: 1px solid var(--border); color: var(--ink); border-radius: 6px; font-family: var(--sans);">
+      <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="checkOfertaPassword()">Odblokuj dostęp</button>
+      <p id="password-error" style="color: #ff5f57; font-family: var(--mono); font-size: 12px; margin-top: 16px; display: none;">Błędne hasło. Spróbuj ponownie.</p>
+    </div>
+
+    <!-- Ukryta zawartość (Mockup w iFrame) -->
+    <div id="oferta-content" style="display: none; width: 100%; height: 85vh; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: #080b12;">
+      <iframe src="gastroapp.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+  </section>
+</div>
+
   /* ---------- CONTACT ---------- */
   .contact-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px;}
   .contact-info p{color:var(--ink-muted);}
@@ -299,6 +324,7 @@
       <button class="tab-link" data-goto="services">Usługi</button>
       <button class="tab-link" data-goto="projects">Projekty</button>
       <button class="tab-link" data-goto="contact">Kontakt</button>
+      <button class="tab-link" data-goto="oferta" style="color: var(--accent-amber);">Oferta</button>
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
   </div>
@@ -562,7 +588,7 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 
 /* ---------- PAGE / TAB SWITCHING ---------- */
-const pages = ['home','about','services','projects','contact'];
+const pages = ['home','about','services','projects', 'oferta', 'contact'];
 const navLinks = document.getElementById('navLinks');
 const navToggle = document.getElementById('navToggle');
 
@@ -696,6 +722,29 @@ async function cycle(){
   }
 }
 cycle();
+  /* ---------- HASŁO OFERTY ---------- */
+function checkOfertaPassword() {
+  const passInput = document.getElementById('oferta-password').value;
+  const errorMsg = document.getElementById('password-error');
+  
+  // Weryfikacja hasła
+  if (passInput === 'Andromed4') {
+    // Ukryj formularz i pokaż ramkę z mockupem
+    document.getElementById('password-container').style.display = 'none';
+    document.getElementById('oferta-content').style.display = 'block';
+    errorMsg.style.display = 'none';
+  } else {
+    // Pokaż błąd
+    errorMsg.style.display = 'block';
+  }
+}
+
+// Obsługa zatwierdzania hasła klawiszem Enter
+document.getElementById('oferta-password').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    checkOfertaPassword();
+  }
+});
 </script>
 
 </body>
