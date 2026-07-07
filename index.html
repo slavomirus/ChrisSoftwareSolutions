@@ -261,31 +261,6 @@
   .card-link:hover{text-decoration:underline;}
   @media (max-width:700px){ .project-grid{grid-template-columns:1fr;} }
 
-  /*<!-- ============ OFERTA (CHRONIONA HASŁEM) ============ -->*/
-<div class="page" id="page-oferta">
-  <section class="page-section-first wrap">
-    <div class="section-head">
-      <p class="section-tag">// oferta dedykowana</p>
-      <h2 class="section-title">GastroApp — Pitch Deck</h2>
-      <p class="section-desc">Ta przestrzeń zawiera materiały koncepcyjne i ofertowe zabezpieczone hasłem.</p>
-    </div>
-
-    <!-- Moduł logowania -->
-    <div id="password-container" style="max-width: 400px; margin: 40px auto; text-align: center; background: var(--bg-panel); padding: 40px; border: 1px solid var(--border); border-radius: var(--radius);">
-      <div style="font-size: 32px; margin-bottom: 16px;">🔒</div>
-      <h3 style="font-family: var(--mono); margin-top: 0; margin-bottom: 24px;">Wprowadź hasło</h3>
-      <input type="password" id="oferta-password" placeholder="Hasło dostępu..." style="width: 100%; padding: 12px 14px; margin-bottom: 16px; background: var(--bg-void); border: 1px solid var(--border); color: var(--ink); border-radius: 6px; font-family: var(--sans);">
-      <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="checkOfertaPassword()">Odblokuj dostęp</button>
-      <p id="password-error" style="color: #ff5f57; font-family: var(--mono); font-size: 12px; margin-top: 16px; display: none;">Błędne hasło. Spróbuj ponownie.</p>
-    </div>
-
-    <!-- Ukryta zawartość (Mockup w iFrame) -->
-    <div id="oferta-content" style="display: none; width: 100%; height: 85vh; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: #080b12;">
-      <iframe src="gastroapp.html" style="width: 100%; height: 100%; border: none;"></iframe>
-    </div>
-  </section>
-</div>
-
   /* ---------- CONTACT ---------- */
   .contact-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px;}
   .contact-info p{color:var(--ink-muted);}
@@ -323,8 +298,8 @@
       <button class="tab-link" data-goto="about">O mnie</button>
       <button class="tab-link" data-goto="services">Usługi</button>
       <button class="tab-link" data-goto="projects">Projekty</button>
+      <button class="tab-link" data-goto="oferta" style="color: var(--accent-amber);">Oferta 🔒</button>
       <button class="tab-link" data-goto="contact">Kontakt</button>
-      <button class="tab-link" data-goto="oferta" style="color: var(--accent-amber);">Oferta</button>
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
   </div>
@@ -332,7 +307,6 @@
 
 <main>
 
-<!-- ============ HOME ============ -->
 <div class="page" id="page-home">
   <section class="hero wrap">
     <div>
@@ -378,7 +352,6 @@
   </div>
 </div>
 
-<!-- ============ O MNIE ============ -->
 <div class="page" id="page-about">
   <section class="page-section-first wrap">
     <div class="section-head">
@@ -424,7 +397,6 @@
   </section>
 </div>
 
-<!-- ============ USŁUGI ============ -->
 <div class="page" id="page-services">
   <section class="page-section-first wrap">
     <div class="section-head">
@@ -474,7 +446,6 @@
   </section>
 </div>
 
-<!-- ============ PROJEKTY ============ -->
 <div class="page" id="page-projects">
   <section class="page-section-first wrap">
     <div class="section-head">
@@ -536,7 +507,28 @@
   </section>
 </div>
 
-<!-- ============ KONTAKT ============ -->
+<div class="page" id="page-oferta">
+  <section class="page-section-first wrap">
+    <div class="section-head">
+      <p class="section-tag">// oferta dedykowana</p>
+      <h2 class="section-title">GastroApp — Pitch Deck</h2>
+      <p class="section-desc">Ta przestrzeń zawiera materiały koncepcyjne i ofertowe zabezpieczone hasłem.</p>
+    </div>
+
+    <div id="password-container" style="max-width: 400px; margin: 40px auto; text-align: center; background: var(--bg-panel); padding: 40px; border: 1px solid var(--border); border-radius: var(--radius);">
+      <div style="font-size: 32px; margin-bottom: 16px;">🔒</div>
+      <h3 style="font-family: var(--mono); margin-top: 0; margin-bottom: 24px;">Wprowadź hasło</h3>
+      <input type="password" id="oferta-password" placeholder="Hasło dostępu..." style="width: 100%; padding: 12px 14px; margin-bottom: 16px; background: var(--bg-void); border: 1px solid var(--border); color: var(--ink); border-radius: 6px; font-family: var(--sans);">
+      <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="checkOfertaPassword()">Odblokuj dostęp</button>
+      <p id="password-error" style="color: #ff5f57; font-family: var(--mono); font-size: 12px; margin-top: 16px; display: none;">Błędne hasło. Spróbuj ponownie.</p>
+    </div>
+
+    <div id="oferta-content" style="display: none; width: 100%; height: 85vh; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: #080b12;">
+      <iframe src="gastroapp.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+  </section>
+</div>
+
 <div class="page" id="page-contact">
   <section class="page-section-first wrap">
     <div class="section-head">
@@ -722,7 +714,8 @@ async function cycle(){
   }
 }
 cycle();
-  /* ---------- HASŁO OFERTY ---------- */
+
+/* ---------- HASŁO OFERTY ---------- */
 function checkOfertaPassword() {
   const passInput = document.getElementById('oferta-password').value;
   const errorMsg = document.getElementById('password-error');
